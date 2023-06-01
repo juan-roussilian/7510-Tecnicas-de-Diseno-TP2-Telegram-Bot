@@ -6,7 +6,7 @@ services:
 variables:
   REGISTRY_URL: registry.gitlab.com/fiuba-memo2/tp2
   KUBE_NAMESPACE_PREFIX: tokio
-  APP_NAME: $CI_PROJECT_NAME
+  APP_NAME: tokio-bot
   GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
 
 stages:
