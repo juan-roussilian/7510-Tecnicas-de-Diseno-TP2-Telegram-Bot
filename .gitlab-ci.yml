@@ -4,7 +4,7 @@ services:
   - docker:dind
 
 variables:
-  REGISTRY_URL: registry.gitlab.com/fiuba-memo2/ejemplos
+  REGISTRY_URL: registry.gitlab.com/fiuba-memo2/tp2
   APP_NAME: telegram-bot-example
   KUBE_NAMESPACE_PREFIX: docentes
   SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
@@ -15,18 +15,6 @@ stages:
   - package
   - deploy_test
   - deploy_prod
-
-sonarcloud-check:
-  stage: build
-  image:
-    name: sonarsource/sonar-scanner-cli:latest
-    entrypoint: [""]
-  cache:
-    key: "${CI_JOB_NAME}"
-    paths:
-      - .sonar/cache
-  script:
-    - sonar-scanner
 
 build_job:
   stage: build
@@ -60,11 +48,11 @@ package_job:
 
 deploy_test_job:
   stage: deploy_test
-  image: nicopaez/kubectl:1.17.5
+  image: nicopaez/kubectl:1.22.0
   environment: test
   script:
     - VERSION=$(cat VERSION.txt)
-    - cp ${KUBECONFIG} $HOME/.kube/config
+    - cp ${KUBECONFIG_DO} $HOME/.kube/config
     - kubectl apply -f k8s/test.configmap.yaml
     - kubectl set image deployment/telegrambot telegrambot=$REGISTRY_URL/$APP_NAME:$VERSION
   only:
@@ -72,11 +60,11 @@ deploy_test_job:
 
 deploy_prod_job:
   stage: deploy_prod
-  image: nicopaez/kubectl:1.17.5
+  image: nicopaez/kubectl:1.22.0
   environment: prod
   script:
     - VERSION=$(cat VERSION.txt)
-    - cp ${KUBECONFIG} $HOME/.kube/config
+    - cp ${KUBECONFIG_DO} $HOME/.kube/config
     - kubectl -n apply -f k8s/prod.configmap.yaml
     - kubectl -n set image deployment/telegrambot telegrambot=$REGISTRY_URL/$APP_NAME:$VERSION
   only:
