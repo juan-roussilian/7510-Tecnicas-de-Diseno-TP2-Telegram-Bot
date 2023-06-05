@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'web_mock'
+require 'api_mock'
 # Uncomment to use VCR
 # require 'vcr_helper'
 
@@ -150,6 +151,15 @@ describe 'BotClient' do
 
     app = BotClient.new(token)
 
+    app.run_once
+  end
+
+  it 'should get a "/registrar name, email" message with valid email and respond with "Bienvenido, name"' do
+    ApiMock.post_mock('Pedro', 'pedro@test.com')
+    when_i_send_text('fake_token', '/registrar Pedro, pedro@test.com')
+    then_i_get_text('fake_token', 'Bienvenido, Pedro')
+
+    app = BotClient.new('fake_token')
     app.run_once
   end
 end

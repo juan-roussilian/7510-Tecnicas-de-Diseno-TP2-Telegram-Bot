@@ -1,6 +1,7 @@
 require "#{File.dirname(__FILE__)}/../lib/routing"
 require "#{File.dirname(__FILE__)}/../lib/version"
 require "#{File.dirname(__FILE__)}/tv/series"
+require 'dotenv/load'
 
 class Routes
   include Routing
@@ -51,6 +52,12 @@ class Routes
 
   on_message '/version' do |bot, message|
     bot.api.send_message(chat_id: message.chat.id, text: Version.current)
+  end
+
+  on_message_pattern %r{/registrar (?<nombre>.*), (?<email>.*)} do |bot, message, args|
+    endpoint = "#{ENV['API_URL']}/usuarios"
+    Faraday.post(endpoint, { nombre: args['nombre'], email: args['email'] }.to_json)
+    bot.api.send_message(chat_id: message.chat.id, text: "Bienvenido, #{args['nombre']}")
   end
 
   default do |bot, message|

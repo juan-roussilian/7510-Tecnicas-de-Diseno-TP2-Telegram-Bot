@@ -4,3 +4,4 @@ metadata:
   name: botconfig
 data:
   LOG_LEVEL: "debug"
+  API_URL: "http://tokio-api-web-1:3000"
