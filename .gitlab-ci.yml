@@ -8,7 +8,7 @@ variables:
   KUBE_NAMESPACE_PREFIX: tokio
   APP_NAME: tokio-bot
   GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
-
+  API_URL:https://restapi-test-tokio-nicopaez.cloud.okteto.net
 stages:
   - build
   - package
