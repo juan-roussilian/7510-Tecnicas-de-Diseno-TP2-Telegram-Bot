@@ -4,3 +4,5 @@ metadata:
   name: botconfig
 data:
   LOG_LEVEL: "info"
+    API_URL: "https://restapi-prod-tokio-nicopaez.cloud.okteto.net"
+

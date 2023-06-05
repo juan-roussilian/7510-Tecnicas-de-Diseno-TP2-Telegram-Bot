@@ -4,4 +4,4 @@ metadata:
   name: botconfig
 data:
   LOG_LEVEL: "debug"
-  API_URL: "http://tokio-api-web-1:3000"
+  API_URL: "https://restapi-test-tokio-nicopaez.cloud.okteto.net"
