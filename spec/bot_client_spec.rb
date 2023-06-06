@@ -162,4 +162,13 @@ describe 'BotClient' do
     app = BotClient.new('fake_token')
     app.run_once
   end
+
+  it 'should get a "/saldo" message from user with balance 0 and respond with the users current balance' do
+    ApiMock.saldo_get_mock(141_733_544)
+    when_i_send_text('fake_token', '/saldo')
+    then_i_get_text('fake_token', '0')
+
+    app = BotClient.new('fake_token')
+    app.run_once
+  end
 end

@@ -60,6 +60,12 @@ class Routes
     bot.api.send_message(chat_id: message.chat.id, text: "Bienvenido, #{args['nombre']}")
   end
 
+  on_message '/saldo' do |bot, message|
+    endpoint = "#{ENV['API_URL']}/saldo?usuario=#{message.from.id}"
+    respuesta = JSON.parse(Faraday.get(endpoint).body)
+    bot.api.send_message(chat_id: message.chat.id, text: (respuesta['saldo']).to_s)
+  end
+
   default do |bot, message|
     bot.api.send_message(chat_id: message.chat.id, text: 'Uh? No te entiendo! Me repetis la pregunta?')
   end
