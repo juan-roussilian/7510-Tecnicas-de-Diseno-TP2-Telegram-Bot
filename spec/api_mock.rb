@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'dotenv/load'
 
 class ApiMock
-  def self.post_mock(nombre, email)
+  def self.registrar_post_mock(nombre, email)
     body = { nombre:, email: }
     respuesta = { id: 1, nombre:, email: }
 
