@@ -5,6 +5,7 @@ require 'dotenv/load'
 
 class Routes
   include Routing
+  STATUS_CODE_OK = 200
 
   on_message '/start' do |bot, message|
     bot.api.send_message(chat_id: message.chat.id, text: "Hola, #{message.from.first_name}")
@@ -66,9 +67,13 @@ class Routes
   end
 
   on_message_pattern %r{/transferir (?<monto>.*), (?<destinatario>.*)} do |bot, message, args|
-    endpoint = "#{ENV['API_URL']}/transferir?usuario=#{message.from.id}"
-    Faraday.post(endpoint, { monto: args['monto'].to_i, destinatario: args['destinatario'] }.to_json)
-    bot.api.send_message(chat_id: message.chat.id, text: "Transferencia exitosa de #{args['monto']} a #{args['destinatario']}")
+    endpoint = "#{ENV['API_URL']}/transferir"
+    respuesta = Faraday.post(endpoint, { usuario: message.from.id, monto: args['monto'].to_i, destinatario: args['destinatario'] }.to_json)
+    if respuesta.status == STATUS_CODE_OK
+      bot.api.send_message(chat_id: message.chat.id, text: "Transferencia exitosa de #{args['monto']} a #{args['destinatario']}")
+    else
+      bot.api.send_message(chat_id: message.chat.id, text: 'No se pudo realizar la transferencia.')
+    end
   end
 
   default do |bot, message|
