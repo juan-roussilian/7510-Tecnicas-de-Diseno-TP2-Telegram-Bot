@@ -41,7 +41,6 @@ class Routes
 
   on_location_response do |bot, message|
     response = "Ubicacion es Lat:#{message.location.latitude} - Long:#{message.location.longitude}"
-    puts response
     bot.api.send_message(chat_id: message.chat.id, text: response)
   end
 
@@ -56,7 +55,8 @@ class Routes
 
   on_message_pattern %r{/registrar (?<nombre>.*), (?<email>.*)} do |bot, message, args|
     endpoint = "#{ENV['API_URL']}/usuarios"
-    Faraday.post(endpoint, { nombre: args['nombre'], email: args['email'], id: message.from.id }.to_json)
+    puts endpoint
+    Faraday.post(endpoint, { nombre: args['nombre'], email: args['email'], telegram_id: message.from.id }.to_json)
     bot.api.send_message(chat_id: message.chat.id, text: "Bienvenido, #{args['nombre']}")
   end
 
