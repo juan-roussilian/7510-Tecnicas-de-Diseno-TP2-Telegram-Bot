@@ -2,10 +2,9 @@ require 'spec_helper'
 require 'dotenv/load'
 
 class ApiMock
-  def self.registrar_post_mock(nombre, email, id)
-    body = { nombre:, email:, id: }
-    respuesta = { id: 1, nombre:, email: }
-
+  def self.registrar_post_mock(nombre, email, telegram_id)
+    body = { nombre:, email:, telegram_id: }
+    respuesta = { id: 1, nombre:, email:, telegram_id: }
     WebMock.stub_request(:post, "#{ENV['API_URL']}/usuarios")
            .with(body: body.to_json, headers: { 'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type' => 'application/x-www-form-urlencoded',
                                                 'User-Agent' => 'Faraday v2.7.4' })
