@@ -56,14 +56,14 @@ class Routes
 
   on_message_pattern %r{/registrar (?<nombre>.*), (?<email>.*)} do |bot, message, args|
     endpoint = "#{ENV['API_URL']}/usuarios"
-    Faraday.post(endpoint, { nombre: args['nombre'], email: args['email'] }.to_json)
+    Faraday.post(endpoint, { nombre: args['nombre'], email: args['email'], id: message.from.id }.to_json)
     bot.api.send_message(chat_id: message.chat.id, text: "Bienvenido, #{args['nombre']}")
   end
 
   on_message '/saldo' do |bot, message|
     endpoint = "#{ENV['API_URL']}/saldo?usuario=#{message.from.id}"
     respuesta = JSON.parse(Faraday.get(endpoint).body)
-    bot.api.send_message(chat_id: message.chat.id, text: (respuesta['saldo']).to_s)
+    bot.api.send_message(chat_id: message.chat.id, text: "Saldo: #{respuesta['saldo']}")
   end
 
   default do |bot, message|

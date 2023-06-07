@@ -155,7 +155,7 @@ describe 'BotClient' do
   end
 
   it 'should get a "/registrar name, email" message with valid email and respond with "Bienvenido, name"' do
-    ApiMock.registrar_post_mock('Pedro', 'pedro@test.com')
+    ApiMock.registrar_post_mock('Pedro', 'pedro@test.com', 141_733_544)
     when_i_send_text('fake_token', '/registrar Pedro, pedro@test.com')
     then_i_get_text('fake_token', 'Bienvenido, Pedro')
 
@@ -166,7 +166,7 @@ describe 'BotClient' do
   it 'should get a "/saldo" message from user with balance 0 and respond with the users current balance' do
     ApiMock.saldo_get_mock(141_733_544)
     when_i_send_text('fake_token', '/saldo')
-    then_i_get_text('fake_token', '0')
+    then_i_get_text('fake_token', 'Saldo: 0')
 
     app = BotClient.new('fake_token')
     app.run_once
