@@ -17,4 +17,12 @@ class ApiMock
            .with(headers: { 'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent' => 'Faraday v2.7.4' })
            .to_return(status: 200, body: respuesta.to_json, headers: {})
   end
+
+  def self.transferir_post_mock(emisor, monto, destinatario)
+    body = { monto:, destinatario: }
+    WebMock.stub_request(:post, "#{ENV['API_URL']}/transferir?usuario=#{emisor}")
+           .with(body: body.to_json, headers: { 'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type' => 'application/x-www-form-urlencoded',
+                                                'User-Agent' => 'Faraday v2.7.4' })
+           .to_return(status: 200, body: '', headers: {})
+  end
 end

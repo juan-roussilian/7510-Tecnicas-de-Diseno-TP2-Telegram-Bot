@@ -55,7 +55,6 @@ class Routes
 
   on_message_pattern %r{/registrar (?<nombre>.*), (?<email>.*)} do |bot, message, args|
     endpoint = "#{ENV['API_URL']}/usuarios"
-    puts endpoint
     Faraday.post(endpoint, { nombre: args['nombre'], email: args['email'], telegram_id: message.from.id }.to_json)
     bot.api.send_message(chat_id: message.chat.id, text: "Bienvenido, #{args['nombre']}")
   end
@@ -64,6 +63,12 @@ class Routes
     endpoint = "#{ENV['API_URL']}/saldo?usuario=#{message.from.id}"
     respuesta = JSON.parse(Faraday.get(endpoint).body)
     bot.api.send_message(chat_id: message.chat.id, text: "Saldo: #{respuesta['saldo']}")
+  end
+
+  on_message_pattern %r{/transferir (?<monto>.*), (?<destinatario>.*)} do |bot, message, args|
+    endpoint = "#{ENV['API_URL']}/transferir?usuario=#{message.from.id}"
+    Faraday.post(endpoint, { monto: args['monto'].to_i, destinatario: args['destinatario'] }.to_json)
+    bot.api.send_message(chat_id: message.chat.id, text: "Transferencia exitosa de #{args['monto']} a #{args['destinatario']}")
   end
 
   default do |bot, message|
