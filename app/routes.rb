@@ -72,7 +72,8 @@ class Routes
     if respuesta.status == STATUS_CODE_OK
       bot.api.send_message(chat_id: message.chat.id, text: "Transferencia exitosa de #{args['monto']} a #{args['destinatario']}")
     else
-      bot.api.send_message(chat_id: message.chat.id, text: 'No se pudo realizar la transferencia.')
+      razon = JSON.parse(respuesta.body)['error']
+      bot.api.send_message(chat_id: message.chat.id, text: "No se pudo realizar la transferencia. Debido a #{razon}")
     end
   end
 
