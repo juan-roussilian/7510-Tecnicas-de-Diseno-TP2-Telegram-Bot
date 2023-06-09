@@ -155,7 +155,7 @@ describe 'BotClient' do
   end
 
   it 'should get a "/registrar name, email" message with valid email and respond with "Bienvenido, name"' do
-    ApiMock.registrar_post_mock('Pedro', 'pedro@test.com', 141_733_544)
+    ApiMock.registrar_post_mock('Pedro', 'pedro@test.com', 141_733_544, 'egutter')
     when_i_send_text('fake_token', '/registrar Pedro, pedro@test.com')
     then_i_get_text('fake_token', 'Bienvenido, Pedro')
 
