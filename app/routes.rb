@@ -6,6 +6,7 @@ require 'dotenv/load'
 class Routes
   include Routing
   STATUS_CODE_OK = 200
+  STATUS_CODE_SUCCESS_CREATING = 201
 
   on_message '/start' do |bot, message|
     bot.api.send_message(chat_id: message.chat.id, text: "Hola, #{message.from.first_name}")
@@ -74,6 +75,17 @@ class Routes
     else
       razon = JSON.parse(respuesta.body)['error']
       bot.api.send_message(chat_id: message.chat.id, text: "No se pudo realizar la transferencia. Debido a #{razon}")
+    end
+  end
+
+  on_message_pattern %r{/crear-grupo (?<nombre_grupo>.*) (?<usuarios>.*)} do |bot, message, args|
+    endpoint = "#{ENV['API_URL']}/grupo"
+    lista_usuarios = args['usuarios'].split(',', -1)
+    respuesta = Faraday.post(endpoint, { nombre_grupo: args['nombre_grupo'], usuarios: lista_usuarios }.to_json)
+    if respuesta.status == STATUS_CODE_SUCCESS_CREATING
+      bot.api.send_message(chat_id: message.chat.id, text: 'Grupo creado')
+    else
+      bot.api.send_message(chat_id: message.chat.id, text: 'No se pudo crear el grupo')
     end
   end
 

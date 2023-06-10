@@ -25,4 +25,12 @@ class ApiMock
                                                 'User-Agent' => 'Faraday v2.7.4' })
            .to_return(status: 200, body: '', headers: {})
   end
+
+  def self.crear_grupo_post_mock(nombre_grupo, usuarios)
+    body = { nombre_grupo:, usuarios: }
+    WebMock.stub_request(:post, "#{ENV['API_URL']}/grupo")
+           .with(body: body.to_json, headers: { 'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type' => 'application/x-www-form-urlencoded',
+                                                'User-Agent' => 'Faraday v2.7.4' })
+           .to_return(status: 201, body: '', headers: {})
+  end
 end
