@@ -57,8 +57,13 @@ class Routes
 
   on_message_pattern %r{/registrar (?<nombre>.*), (?<email>.*)} do |bot, message, args|
     endpoint = "#{ENV['API_URL']}/usuarios"
-    Faraday.post(endpoint, { nombre: args['nombre'], email: args['email'], telegram_id: message.from.id, telegram_username: message.from.username }.to_json)
-    bot.api.send_message(chat_id: message.chat.id, text: "Bienvenido, #{args['nombre']}")
+    respuesta = Faraday.post(endpoint, { nombre: args['nombre'], email: args['email'], telegram_id: message.from.id, telegram_username: message.from.username }.to_json)
+    if respuesta.status == STATUS_CODE_OK
+      bot.api.send_message(chat_id: message.chat.id, text: "Bienvenido, #{args['nombre']}")
+    else
+      razon = JSON.parse(respuesta.body)['error']
+      bot.api.send_message(chat_id: message.chat.id, text: "No se pudo registrar, #{razon}")
+    end
   end
 
   on_message '/saldo' do |bot, message|
