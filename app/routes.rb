@@ -91,7 +91,8 @@ class Routes
     if respuesta.status == STATUS_CODE_SUCCESS_CREATING
       bot.api.send_message(chat_id: message.chat.id, text: 'Grupo creado')
     else
-      bot.api.send_message(chat_id: message.chat.id, text: 'No se pudo crear el grupo')
+      razon = JSON.parse(respuesta.body)['error']
+      bot.api.send_message(chat_id: message.chat.id, text: "No se pudo crear el grupo. Debido a #{razon}")
     end
   end
 
