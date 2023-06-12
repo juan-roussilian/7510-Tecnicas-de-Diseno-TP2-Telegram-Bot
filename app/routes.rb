@@ -64,7 +64,6 @@ class Routes
       razon = JSON.parse(respuesta.body)['error']
       bot.api.send_message(chat_id: message.chat.id, text: "No se pudo registrar, #{razon}")
     end
-  end
 
   on_message '/saldo' do |bot, message|
     endpoint = "#{ENV['API_URL']}/saldo?usuario=#{message.from.id}"
@@ -85,14 +84,13 @@ class Routes
 
   on_message_pattern %r{/crear-grupo (?<nombre_grupo>.*) (?<usuarios>.*)} do |bot, message, args|
     endpoint = "#{ENV['API_URL']}/grupo"
-    lista_usuarios = args['usuarios'].split(',', -1)
+    lista_usuarios = args['usuarios'].split(',')
     lista_usuarios << message.from.username
     respuesta = Faraday.post(endpoint, { nombre_grupo: args['nombre_grupo'], usuarios: lista_usuarios }.to_json)
     if respuesta.status == STATUS_CODE_SUCCESS_CREATING
       bot.api.send_message(chat_id: message.chat.id, text: 'Grupo creado')
     else
-      razon = JSON.parse(respuesta.body)['error']
-      bot.api.send_message(chat_id: message.chat.id, text: "No se pudo crear el grupo. Debido a #{razon}")
+      bot.api.send_message(chat_id: message.chat.id, text: 'No se pudo crear el grupo')
     end
   end
 
