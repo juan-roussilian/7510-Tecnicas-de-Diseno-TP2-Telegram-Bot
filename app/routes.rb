@@ -86,6 +86,7 @@ class Routes
   on_message_pattern %r{/crear-grupo (?<nombre_grupo>.*) (?<usuarios>.*)} do |bot, message, args|
     endpoint = "#{ENV['API_URL']}/grupo"
     lista_usuarios = args['usuarios'].split(',', -1)
+    lista_usuarios << message.from.username
     respuesta = Faraday.post(endpoint, { nombre_grupo: args['nombre_grupo'], usuarios: lista_usuarios }.to_json)
     if respuesta.status == STATUS_CODE_SUCCESS_CREATING
       bot.api.send_message(chat_id: message.chat.id, text: 'Grupo creado')

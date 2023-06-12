@@ -182,7 +182,7 @@ describe 'BotClient' do
   end
 
   it 'should get a "/crear-grupo GrupoTest Juan" message from user and responde with "Grupo creado"' do
-    ApiMock.crear_grupo_post_mock('GrupoTest', ['Juan'])
+    ApiMock.crear_grupo_post_mock('GrupoTest', %w[Juan egutter])
     when_i_send_text('fake_token', '/crear-grupo GrupoTest Juan')
     then_i_get_text('fake_token', 'Grupo creado')
 
