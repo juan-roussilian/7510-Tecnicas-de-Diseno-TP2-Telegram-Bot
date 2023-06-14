@@ -71,7 +71,11 @@ class Routes
   on_message '/saldo' do |bot, message|
     endpoint = "#{ENV['API_URL']}/saldo?usuario=#{message.from.id}"
     respuesta = JSON.parse(Faraday.get(endpoint).body)
-    bot.api.send_message(chat_id: message.chat.id, text: "Saldo: #{respuesta['saldo']}")
+    if respuesta.status == STATUS_CODE_OK
+      bot.api.send_message(chat_id: message.chat.id, text: "Saldo: #{respuesta['saldo']}")
+    else
+      bot.api.send_message(chat_id: message.chat.id, text: "No se pudo obtener saldo, verifique estar registrado")
+    end
   end
 
   on_message_pattern %r{/transferir (?<monto>.*), (?<destinatario>.*)} do |bot, message, args|
