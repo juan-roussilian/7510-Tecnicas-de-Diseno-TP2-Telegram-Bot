@@ -1,8 +1,9 @@
 require "#{File.dirname(__FILE__)}/../lib/routing"
 require "#{File.dirname(__FILE__)}/../lib/version"
 require "#{File.dirname(__FILE__)}/tv/series"
-require "#{File.dirname(__FILE__)}/comandos/creargasto"
+require "#{File.dirname(__FILE__)}/comandos/crear_gasto"
 require 'dotenv/load'
+require 'byebug'
 
 class Routes
   include Routing
