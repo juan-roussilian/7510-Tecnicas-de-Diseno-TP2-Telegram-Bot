@@ -7,8 +7,9 @@ require 'byebug'
 
 class Routes
   include Routing
-  STATUS_CODE_OK = 200
-  STATUS_CODE_SUCCESS_CREATING = 201
+  STATUS_OK = 200
+  STATUS_CREACION_OK = 201
+  STATUS_ERROR_SERVIDOR = 500
 
   on_message '/start' do |bot, message|
     bot.api.send_message(chat_id: message.chat.id, text: "Hola, #{message.from.first_name}")
@@ -60,7 +61,7 @@ class Routes
   on_message_pattern %r{/registrar (?<nombre>.*), (?<email>.*)} do |bot, message, args|
     endpoint = "#{ENV['API_URL']}/usuarios"
     respuesta = Faraday.post(endpoint, { nombre: args['nombre'], email: args['email'], telegram_id: message.from.id, telegram_username: message.from.username }.to_json)
-    if respuesta.status == STATUS_CODE_SUCCESS_CREATING
+    if respuesta.status == STATUS_CREACION_OK
       bot.api.send_message(chat_id: message.chat.id, text: "Bienvenido, #{args['nombre']}")
     else
       razon = JSON.parse(respuesta.body)['error']
@@ -71,7 +72,7 @@ class Routes
   on_message '/saldo' do |bot, message|
     endpoint = "#{ENV['API_URL']}/saldo?usuario=#{message.from.id}"
     respuesta = Faraday.get(endpoint)
-    if respuesta.status == STATUS_CODE_OK
+    if respuesta.status == STATUS_OK
       saldo = JSON.parse(respuesta.body)['saldo']
       bot.api.send_message(chat_id: message.chat.id, text: "Saldo: #{saldo}")
     else
@@ -82,10 +83,14 @@ class Routes
   on_message_pattern %r{/transferir (?<monto>.*), (?<destinatario>.*)} do |bot, message, args|
     endpoint = "#{ENV['API_URL']}/transferir"
     respuesta = Faraday.post(endpoint, { usuario: message.from.id, monto: args['monto'].to_i, destinatario: args['destinatario'] }.to_json)
-    if respuesta.status == STATUS_CODE_OK
+    if respuesta.status == STATUS_OK
       bot.api.send_message(chat_id: message.chat.id, text: "Transferencia exitosa de #{args['monto']} a #{args['destinatario']}")
     else
-      razon = JSON.parse(respuesta.body)['error']
+      razon = if respuesta.status == STATUS_ERROR_SERVIDOR
+                'falla del servidor'
+              else
+                JSON.parse(respuesta.body)['error']
+              end
       bot.api.send_message(chat_id: message.chat.id, text: "No se pudo realizar la transferencia. Debido a #{razon}")
     end
   end
@@ -95,7 +100,7 @@ class Routes
     lista_usuarios = args['usuarios'].split(',')
     lista_usuarios << message.from.username
     respuesta = Faraday.post(endpoint, { nombre_grupo: args['nombre_grupo'], usuarios: lista_usuarios }.to_json)
-    if respuesta.status == STATUS_CODE_SUCCESS_CREATING
+    if respuesta.status == STATUS_CREACION_OK
       bot.api.send_message(chat_id: message.chat.id, text: 'Grupo creado')
     else
       bot.api.send_message(chat_id: message.chat.id, text: 'No se pudo crear el grupo')
