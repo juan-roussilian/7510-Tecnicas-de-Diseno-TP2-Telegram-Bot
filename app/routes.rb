@@ -72,10 +72,10 @@ class Routes
     endpoint = "#{ENV['API_URL']}/saldo?usuario=#{message.from.id}"
     respuesta = Faraday.get(endpoint)
     if respuesta.status == STATUS_CODE_OK
-      saldo=JSON.parse(respuesta.body)['saldo']
+      saldo = JSON.parse(respuesta.body)['saldo']
       bot.api.send_message(chat_id: message.chat.id, text: "Saldo: #{saldo}")
     else
-      bot.api.send_message(chat_id: message.chat.id, text: "No se pudo obtener saldo, verifique estar registrado")
+      bot.api.send_message(chat_id: message.chat.id, text: 'No se pudo obtener saldo, verifique estar registrado')
     end
   end
 
