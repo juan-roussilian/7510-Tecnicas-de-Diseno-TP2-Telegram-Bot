@@ -2,14 +2,17 @@ require "#{File.dirname(__FILE__)}/../lib/routing"
 require "#{File.dirname(__FILE__)}/../lib/version"
 require "#{File.dirname(__FILE__)}/tv/series"
 require "#{File.dirname(__FILE__)}/comandos/crear_gasto"
+require "#{File.dirname(__FILE__)}/comandos/crear_grupo"
+require "#{File.dirname(__FILE__)}/comandos/transferir"
+require "#{File.dirname(__FILE__)}/comandos/saldo"
+require "#{File.dirname(__FILE__)}/comandos/registrar"
 require 'dotenv/load'
 require 'byebug'
 
 class Routes
   include Routing
-  STATUS_OK = 200
-  STATUS_CREACION_OK = 201
-  STATUS_ERROR_SERVIDOR = 500
+  STATUS_CODE_OK = 200
+  STATUS_CODE_SUCCESS_CREATING = 201
 
   on_message '/start' do |bot, message|
     bot.api.send_message(chat_id: message.chat.id, text: "Hola, #{message.from.first_name}")
@@ -59,52 +62,24 @@ class Routes
   end
 
   on_message_pattern %r{/registrar (?<nombre>.*), (?<email>.*)} do |bot, message, args|
-    endpoint = "#{ENV['API_URL']}/usuarios"
-    respuesta = Faraday.post(endpoint, { nombre: args['nombre'], email: args['email'], telegram_id: message.from.id, telegram_username: message.from.username }.to_json)
-    if respuesta.status == STATUS_CREACION_OK
-      bot.api.send_message(chat_id: message.chat.id, text: "Bienvenido, #{args['nombre']}")
-    else
-      razon = JSON.parse(respuesta.body)['error']
-      bot.api.send_message(chat_id: message.chat.id, text: "No se pudo registrar, #{razon}")
-    end
+    salida = ComandoRegistrar.new(args['nombre'], args['email'], message.from.id, message.from.username).ejecutar
+    bot.api.send_message(chat_id: message.chat.id, text: salida)
   end
 
   on_message '/saldo' do |bot, message|
-    endpoint = "#{ENV['API_URL']}/saldo?usuario=#{message.from.id}"
-    respuesta = Faraday.get(endpoint)
-    if respuesta.status == STATUS_OK
-      saldo = JSON.parse(respuesta.body)['saldo']
-      bot.api.send_message(chat_id: message.chat.id, text: "Saldo: #{saldo}")
-    else
-      bot.api.send_message(chat_id: message.chat.id, text: 'No se pudo obtener saldo, verifique estar registrado')
-    end
+    salida = ComandoSaldo.new(message.from.id).ejecutar
+    bot.api.send_message(chat_id: message.chat.id, text: salida)
   end
 
   on_message_pattern %r{/transferir (?<monto>.*), (?<destinatario>.*)} do |bot, message, args|
-    endpoint = "#{ENV['API_URL']}/transferir"
-    respuesta = Faraday.post(endpoint, { usuario: message.from.id, monto: args['monto'].to_i, destinatario: args['destinatario'] }.to_json)
-    if respuesta.status == STATUS_OK
-      bot.api.send_message(chat_id: message.chat.id, text: "Transferencia exitosa de #{args['monto']} a #{args['destinatario']}")
-    else
-      razon = if respuesta.status == STATUS_ERROR_SERVIDOR
-                'falla del servidor'
-              else
-                JSON.parse(respuesta.body)['error']
-              end
-      bot.api.send_message(chat_id: message.chat.id, text: "No se pudo realizar la transferencia. Debido a #{razon}")
-    end
+    salida = ComandoTransferir.new(message.from.id, args['monto'].to_i, args['destinatario']).ejecutar
+    bot.api.send_message(chat_id: message.chat.id, text: salida)
   end
 
   on_message_pattern %r{/crear-grupo (?<nombre_grupo>.*) (?<usuarios>.*)} do |bot, message, args|
-    endpoint = "#{ENV['API_URL']}/grupo"
-    lista_usuarios = args['usuarios'].split(',')
-    lista_usuarios << message.from.username
-    respuesta = Faraday.post(endpoint, { nombre_grupo: args['nombre_grupo'], usuarios: lista_usuarios }.to_json)
-    if respuesta.status == STATUS_CREACION_OK
-      bot.api.send_message(chat_id: message.chat.id, text: 'Grupo creado')
-    else
-      bot.api.send_message(chat_id: message.chat.id, text: 'No se pudo crear el grupo')
-    end
+    usuarios = args['usuarios'].split(',')
+    salida = ComandoCrearGrupo.new(message.from.username, args['nombre_grupo'], usuarios).ejecutar
+    bot.api.send_message(chat_id: message.chat.id, text: salida)
   end
 
   on_message_pattern %r{/crear-gasto (?<nombre_gasto>.*) (?<monto>.*) (?<nombre_grupo>.*)} do |bot, message, args|
