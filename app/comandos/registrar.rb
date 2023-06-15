@@ -1,5 +1,4 @@
 require_relative 'comando'
-require 'byebug'
 class ComandoRegistrar < Comando
   STATUS_CODE_SUCCESS_CREATING = 201
   ENDPOINT = "#{ENV['API_URL']}/usuarios".freeze

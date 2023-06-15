@@ -7,7 +7,6 @@ require "#{File.dirname(__FILE__)}/comandos/transferir"
 require "#{File.dirname(__FILE__)}/comandos/saldo"
 require "#{File.dirname(__FILE__)}/comandos/registrar"
 require 'dotenv/load'
-require 'byebug'
 
 class Routes
   include Routing
