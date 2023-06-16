@@ -7,6 +7,7 @@ require "#{File.dirname(__FILE__)}/comandos/transferir"
 require "#{File.dirname(__FILE__)}/comandos/saldo"
 require "#{File.dirname(__FILE__)}/comandos/registrar"
 require "#{File.dirname(__FILE__)}/comandos/consultar_movimientos"
+require "#{File.dirname(__FILE__)}/comandos/consultar_gasto"
 require "#{File.dirname(__FILE__)}/presentador_es"
 require 'dotenv/load'
 
@@ -90,6 +91,11 @@ class Routes
 
   on_message_pattern %r{/crear-gasto (?<nombre_gasto>.*) (?<monto>.*) (?<nombre_grupo>.*)} do |bot, message, args|
     salida = ComandoCrearGasto.new(message.from.id, args['nombre_gasto'], args['monto'].to_i, args['nombre_grupo']).ejecutar
+    bot.api.send_message(chat_id: message.chat.id, text: salida)
+  end
+
+  on_message_pattern %r{/consultar-gasto (?<id_gasto>.*)} do |bot, message, args|
+    salida = ComandoConsultarGasto.new(message.from.id, args['id_gasto']).ejecutar
     bot.api.send_message(chat_id: message.chat.id, text: salida)
   end
 
