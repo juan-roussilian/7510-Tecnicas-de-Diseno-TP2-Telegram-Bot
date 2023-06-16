@@ -181,7 +181,7 @@ describe 'BotClient' do
     app.run_once
   end
 
-  it 'should get a "/crear-grupo GrupoTest Juan" message from user and responde with "Grupo creado"' do
+  it 'should get a "/crear-grupo GrupoTest Juan" message from user and respond with "Grupo creado"' do
     ApiMock.crear_grupo_post_mock('GrupoTest', %w[Juan egutter])
     when_i_send_text('fake_token', '/crear-grupo GrupoTest Juan')
     then_i_get_text('fake_token', 'Grupo creado')
@@ -190,12 +190,22 @@ describe 'BotClient' do
     app.run_once
   end
 
-  it 'should get a /crear-gasto pizza 2000 GrupoPizzas" message from user and respond with "Gasto creado"' do
+  it 'should get a "/crear-gasto pizza 2000 GrupoPizzas" message from user and respond with "Gasto creado"' do
     ApiMock.crear_gasto_post_mock(141_733_544, 'pizza', 2000, 'GrupoPizzas')
     when_i_send_text('fake_token', '/crear-gasto pizza 2000 GrupoPizzas')
     then_i_get_text('fake_token', 'Gasto creado id: 1')
 
     app = BotClient.new('fake_token')
     app.run_once
+  end
+
+  xit 'shoud get a  "/consultar-movimientos" message from user and repond with user movements' do
+    ApiMock.consultar_movimientos_get_mock(141_733_544)
+    when_i_send_text('fake_token', '/consultar-movimientos')
+
+    movements_string = "2021-06-01 12:35 , carga saldo, 100\n2021-06-02 16:05 , transferencia, 50\n2021-06-05 19:55 , pago recibido de pepe: 30, gasto 1"
+
+    then_i_get_text('fake_token', movements_string)
+    BotClient.new('fake_token').run_once
   end
 end

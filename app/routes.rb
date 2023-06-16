@@ -6,6 +6,8 @@ require "#{File.dirname(__FILE__)}/comandos/crear_grupo"
 require "#{File.dirname(__FILE__)}/comandos/transferir"
 require "#{File.dirname(__FILE__)}/comandos/saldo"
 require "#{File.dirname(__FILE__)}/comandos/registrar"
+require "#{File.dirname(__FILE__)}/comandos/consultar_movimientos"
+require "#{File.dirname(__FILE__)}/presentador_es"
 require 'dotenv/load'
 
 class Routes
@@ -67,6 +69,11 @@ class Routes
 
   on_message '/saldo' do |bot, message|
     salida = ComandoSaldo.new(message.from.id).ejecutar
+    bot.api.send_message(chat_id: message.chat.id, text: salida)
+  end
+
+  on_message '/consultar-movimientos' do |bot, message|
+    salida = ComandoConsultarMovimientos.new(message.from.id, PresentadorES.new).ejecutar
     bot.api.send_message(chat_id: message.chat.id, text: salida)
   end
 

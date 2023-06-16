@@ -42,4 +42,15 @@ class ApiMock
                                                 'User-Agent' => 'Faraday v2.7.4' })
            .to_return(status: 201, body: respuesta.to_json, headers: {})
   end
+
+  def self.consultar_movimientos_get_mock(usuario)
+    movimiento_carga = { fecha: '2021-06-01 12:35', tipo: 'carga saldo', valor: 100, usuario_pago: nil, id_gasto: nil }
+    movimiento_transferencia = { fecha: '2021-06-02 16:05', tipo: 'transferencia', valor: 50, usuario_pago: nil, id_gasto: nil }
+    movimiento_pago = { fecha: '2021-06-05 19:55', tipo: 'pago', valor: 30, usuario_pago: 'pepe', id_gasto: 1 }
+    respuesta = [movimiento_carga, movimiento_transferencia, movimiento_pago]
+
+    WebMock.stub_request(:get, "#{ENV['API_URL']}/movimientos?usuario=#{usuario}")
+           .with(headers: { 'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent' => 'Faraday v2.7.4' })
+           .to_return(status: 200, body: respuesta.to_json, headers: {})
+  end
 end
