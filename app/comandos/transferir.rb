@@ -1,7 +1,6 @@
 require_relative 'comando'
 
 class ComandoTransferir < Comando
-  STATUS_CODE_OK = 200
   ENDPOINT = "#{ENV['API_URL']}/transferir".freeze
 
   def initialize(usuario, monto, destinatario)

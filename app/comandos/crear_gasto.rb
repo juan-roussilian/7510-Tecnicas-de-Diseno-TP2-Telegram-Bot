@@ -1,7 +1,6 @@
 require_relative 'comando'
 
 class ComandoCrearGasto < Comando
-  STATUS_CODE_SUCCESS_CREATING = 201
   ENDPOINT = "#{ENV['API_URL']}/gasto".freeze
 
   def initialize(usuario, nombre_gasto, monto, nombre_grupo)

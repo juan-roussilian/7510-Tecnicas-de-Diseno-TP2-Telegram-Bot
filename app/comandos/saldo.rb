@@ -1,8 +1,6 @@
 require_relative 'comando'
 
 class ComandoSaldo < Comando
-  STATUS_CODE_OK = 200
-
   def initialize(usuario)
     @usuario = usuario
     super()

@@ -1,6 +1,5 @@
 require_relative 'comando'
 class ComandoRegistrar < Comando
-  STATUS_CODE_SUCCESS_CREATING = 201
   ENDPOINT = "#{ENV['API_URL']}/usuarios".freeze
 
   def initialize(nombre, email, telegram_id, telegram_username)

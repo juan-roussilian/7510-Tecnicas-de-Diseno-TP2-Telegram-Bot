@@ -1,7 +1,6 @@
 require_relative 'comando'
 
 class ComandoCrearGrupo < Comando
-  STATUS_CODE_SUCCESS_CREATING = 201
   ENDPOINT = "#{ENV['API_URL']}/grupo".freeze
 
   def initialize(nombre_creador, nombre_grupo, lista_usuarios)
