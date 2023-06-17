@@ -31,5 +31,6 @@ class PresentadorES
     gasto_usuarios.each do |usuario|
       texto << "#{usuario['nombre']}: #{usuario['estado']}\n"
     end
+    texto
   end
 end

@@ -2,9 +2,10 @@ require_relative 'comando'
 
 class ComandoConsultarGasto < Comando
   ENDPOINT = "#{ENV['API_URL']}/gasto".freeze
-  def initialize(usuario, id_gasto)
+  def initialize(usuario, id_gasto, presentador)
     @usuario = usuario
     @id_gasto = id_gasto
+    @presentador = presentador
     super()
   end
 

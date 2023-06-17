@@ -95,7 +95,7 @@ class Routes
   end
 
   on_message_pattern %r{/consultar-gasto (?<id_gasto>.*)} do |bot, message, args|
-    salida = ComandoConsultarGasto.new(message.from.id, args['id_gasto']).ejecutar
+    salida = ComandoConsultarGasto.new(message.from.id, args['id_gasto'], PresentadorES.new).ejecutar
     bot.api.send_message(chat_id: message.chat.id, text: salida)
   end
 
