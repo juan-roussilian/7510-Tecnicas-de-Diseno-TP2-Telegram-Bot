@@ -199,12 +199,10 @@ describe 'BotClient' do
     app.run_once
   end
 
-  xit 'shoud get a  "/consultar-movimientos" message from user and repond with user movements' do
+  it 'shoud get a  "/consultar-movimientos" message from user and repond with user movements' do
     ApiMock.consultar_movimientos_get_mock(141_733_544)
     when_i_send_text('fake_token', '/consultar-movimientos')
-
-    movements_string = "2021-06-01 12:35 , carga saldo, 100\n2021-06-02 16:05 , transferencia, 50\n2021-06-05 19:55 , pago recibido de pepe: 30, gasto 1"
-
+    movements_string = "2021-06-01 12:35 , carga saldo, 100\n2021-06-02 16:05 , transferencia, 50\n2021-06-05 19:55 , pago recibido de pepe: 30, gasto 1\n"
     then_i_get_text('fake_token', movements_string)
     BotClient.new('fake_token').run_once
   end
