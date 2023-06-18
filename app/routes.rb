@@ -64,12 +64,12 @@ class Routes
   end
 
   on_message_pattern %r{/registrar (?<nombre>.*), (?<email>.*)} do |bot, message, args|
-    salida = ComandoRegistrar.new(args['nombre'], args['email'], message.from.id, message.from.username).ejecutar
+    salida = ComandoRegistrar.new(args['nombre'], args['email'], message.from.id, message.from.username, PresentadorES.new).ejecutar
     bot.api.send_message(chat_id: message.chat.id, text: salida)
   end
 
   on_message '/saldo' do |bot, message|
-    salida = ComandoSaldo.new(message.from.id).ejecutar
+    salida = ComandoSaldo.new(message.from.id, PresentadorES.new).ejecutar
     bot.api.send_message(chat_id: message.chat.id, text: salida)
   end
 
@@ -79,18 +79,18 @@ class Routes
   end
 
   on_message_pattern %r{/transferir (?<monto>.*), (?<destinatario>.*)} do |bot, message, args|
-    salida = ComandoTransferir.new(message.from.id, args['monto'].to_i, args['destinatario']).ejecutar
+    salida = ComandoTransferir.new(message.from.id, args['monto'].to_i, args['destinatario'], PresentadorES.new).ejecutar
     bot.api.send_message(chat_id: message.chat.id, text: salida)
   end
 
   on_message_pattern %r{/crear-grupo (?<nombre_grupo>.*) (?<usuarios>.*)} do |bot, message, args|
     usuarios = args['usuarios'].split(',')
-    salida = ComandoCrearGrupo.new(message.from.username, args['nombre_grupo'], usuarios).ejecutar
+    salida = ComandoCrearGrupo.new(message.from.username, args['nombre_grupo'], usuarios, PresentadorES.new).ejecutar
     bot.api.send_message(chat_id: message.chat.id, text: salida)
   end
 
   on_message_pattern %r{/crear-gasto (?<nombre_gasto>.*) (?<monto>.*) (?<nombre_grupo>.*)} do |bot, message, args|
-    salida = ComandoCrearGasto.new(message.from.id, args['nombre_gasto'], args['monto'].to_i, args['nombre_grupo']).ejecutar
+    salida = ComandoCrearGasto.new(message.from.id, args['nombre_gasto'], args['monto'].to_i, args['nombre_grupo'], PresentadorES.new).ejecutar
     bot.api.send_message(chat_id: message.chat.id, text: salida)
   end
 

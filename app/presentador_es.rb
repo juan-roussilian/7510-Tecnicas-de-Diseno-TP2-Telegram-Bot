@@ -1,4 +1,9 @@
 class PresentadorES
+  GRUPO_CREADO = 'Grupo creado'.freeze
+  GASTO_CREADO = 'Gasto creado id:'.freeze
+  TRANSFERENCIA = 'Transferencia exitosa'.freeze
+  SALDO = 'Saldo'.freeze
+  BIENBENIDO = 'Bienvenido'.freeze
   def presentar_movimientos(movimientos)
     texto = ''
 
@@ -33,5 +38,25 @@ class PresentadorES
       texto << "#{usuario['nombre']}: #{usuario['estado']}\n"
     end
     texto
+  end
+
+  def presentar_gasto_creado(id)
+    "#{GASTO_CREADO} #{id}"
+  end
+
+  def grupo_creado
+    GRUPO_CREADO
+  end
+
+  def transferencia_exitosa(monto, destinatario)
+    "#{TRANSFERENCIA} de #{monto} a #{destinatario}"
+  end
+
+  def saldo(monto)
+    "#{SALDO}: #{monto}"
+  end
+
+  def bienbenido(nombre)
+    "#{BIENBENIDO}, #{nombre}"
   end
 end

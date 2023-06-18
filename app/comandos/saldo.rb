@@ -1,8 +1,9 @@
 require_relative 'comando'
 
 class ComandoSaldo < Comando
-  def initialize(usuario)
+  def initialize(usuario, presentador)
     @usuario = usuario
+    @presentador = presentador
     super()
   end
 
@@ -11,7 +12,7 @@ class ComandoSaldo < Comando
     respuesta = Faraday.get(endpoint)
     if respuesta.status == STATUS_CODE_OK
       saldo = JSON.parse(respuesta.body)['saldo']
-      "Saldo: #{saldo}"
+      @presentador.saldo(saldo)
     else
       manejar_error(respuesta)
     end
