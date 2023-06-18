@@ -1,4 +1,3 @@
-require 'byebug'
 class PresentadorES
   def presentar_movimientos(movimientos)
     texto = ''
@@ -10,8 +9,10 @@ class PresentadorES
       case tipo
       when 'pago'
         texto << "#{fecha} , pago recibido de #{movimiento['usuario_pago']}: #{valor}, gasto #{movimiento['id_gasto']}\n"
-      when 'transferencia', 'carga saldo'
+      when 'transferencia'
         texto << "#{fecha} , #{tipo}, #{valor}\n"
+      when 'carga'
+        texto << "#{fecha} , #{tipo} saldo, #{valor}\n"
       end
     end
     texto

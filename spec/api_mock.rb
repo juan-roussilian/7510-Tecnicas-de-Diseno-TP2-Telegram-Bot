@@ -44,7 +44,7 @@ class ApiMock
   end
 
   def self.consultar_movimientos_get_mock(usuario)
-    movimiento_carga = { fecha: '2021-06-01 12:35', tipo: 'carga saldo', valor: 100, usuario_pago: nil, id_gasto: nil }
+    movimiento_carga = { fecha: '2021-06-01 12:35', tipo: 'carga', valor: 100, usuario_pago: nil, id_gasto: nil }
     movimiento_transferencia = { fecha: '2021-06-02 16:05', tipo: 'transferencia', valor: 50, usuario_pago: nil, id_gasto: nil }
     movimiento_pago = { fecha: '2021-06-05 19:55', tipo: 'pago', valor: 30, usuario_pago: 'pepe', id_gasto: 1 }
     respuesta = [movimiento_carga, movimiento_transferencia, movimiento_pago]
