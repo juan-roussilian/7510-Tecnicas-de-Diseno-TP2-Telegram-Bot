@@ -14,7 +14,7 @@ class ComandoRegistrar < Comando
   def ejecutar
     respuesta = Faraday.post(ENDPOINT, { nombre: @nombre, email: @email, telegram_id: @telegram_id, telegram_username: @telegram_username }.to_json)
     if respuesta.status == STATUS_CODE_SUCCESS_CREATING
-      @presentador.bienbenido(@nombre)
+      @presentador.bienvenido(@nombre)
     else
       manejar_error(respuesta)
     end

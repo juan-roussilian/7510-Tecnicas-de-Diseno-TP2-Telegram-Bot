@@ -69,16 +69,21 @@ class ApiMock
            .to_return(status: 200, body: gasto.to_json, headers: {})
   end
 
-  def self.cobrar_gasto_get_mock(usuario)
-    gasto = {
+  def self.pagar_gasto_post_mock(usuario)
+    body = {
+      usuario:,
+      id_gasto: 1,
+      monto: 100
+    }
+    respuesta = {
       id_gasto: 1,
       nombre_gasto: 'GastoPrueba',
-      cobro: 50,
-      pendiente: 0.0,
-      nombre_grupo: 'grupoTest'
+      cobro: 100,
+      nombre_grupo: 'grupoTest',
+      pendiente: 0.0
     }
-    WebMock.stub_request(:get, "#{ENV['API_URL']}/cobrar-gasto?id_gasto=1&monto=100&usuario=#{usuario}")
-           .with(headers: { 'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent' => 'Faraday v2.7.4' })
-           .to_return(status: 200, body: gasto.to_json, headers: {})
+    WebMock.stub_request(:post, "#{ENV['API_URL']}/pagos")
+           .with(body: body.to_json, headers: { 'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent' => 'Faraday v2.7.4' })
+           .to_return(status: 201, body: respuesta.to_json, headers: {})
   end
 end

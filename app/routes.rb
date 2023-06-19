@@ -8,7 +8,7 @@ require "#{File.dirname(__FILE__)}/comandos/saldo"
 require "#{File.dirname(__FILE__)}/comandos/registrar"
 require "#{File.dirname(__FILE__)}/comandos/consultar_movimientos"
 require "#{File.dirname(__FILE__)}/comandos/consultar_gasto"
-require "#{File.dirname(__FILE__)}/comandos/cobrar_gasto"
+require "#{File.dirname(__FILE__)}/comandos/pagar_gasto"
 require "#{File.dirname(__FILE__)}/presentador_es"
 require 'dotenv/load'
 
@@ -100,8 +100,8 @@ class Routes
     bot.api.send_message(chat_id: message.chat.id, text: salida)
   end
 
-  on_message_pattern %r{/cobrar-gasto (?<id_gasto>.*) (?<monto>.*)} do |bot, message, args|
-    salida = ComandoCobrarGasto.new(message.from.id, args['id_gasto'], args['monto'], PresentadorES.new).ejecutar
+  on_message_pattern %r{/pagar-gasto (?<id_gasto>.*) (?<monto>.*)} do |bot, message, args|
+    salida = ComandoPagarGasto.new(message.from.id, args['id_gasto'].to_i, args['monto'].to_i, PresentadorES.new).ejecutar
     bot.api.send_message(chat_id: message.chat.id, text: salida)
   end
 

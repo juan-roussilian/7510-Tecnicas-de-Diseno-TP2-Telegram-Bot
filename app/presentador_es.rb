@@ -3,7 +3,7 @@ class PresentadorES
   GASTO_CREADO = 'Gasto creado id:'.freeze
   TRANSFERENCIA = 'Transferencia exitosa'.freeze
   SALDO = 'Saldo'.freeze
-  BIENBENIDO = 'Bienvenido'.freeze
+  BIENVENIDO = 'Bienvenido'.freeze
   def presentar_movimientos(movimientos)
     texto = ''
 
@@ -56,16 +56,16 @@ class PresentadorES
     "#{SALDO}: #{monto}"
   end
 
-  def bienbenido(nombre)
-    "#{BIENBENIDO}, #{nombre}"
+  def bienvenido(nombre)
+    "#{BIENVENIDO}, #{nombre}"
   end
 
-  def presentar_gasto_cobrado(info_cobranza)
-    gasto_id = info_cobranza['id_gasto']
-    nombre_gasto = info_cobranza['nombre_gasto']
-    cobrado = info_cobranza['cobro']
-    nombre_grupo = info_cobranza['nombre_grupo']
-    pendiente = info_cobranza['pendiente']
+  def presentar_gasto_pagado(informacion_de_pago)
+    gasto_id = informacion_de_pago['id_gasto']
+    nombre_gasto = informacion_de_pago['nombre_gasto']
+    cobrado = informacion_de_pago['cobro']
+    nombre_grupo = informacion_de_pago['nombre_grupo']
+    pendiente = informacion_de_pago['pendiente']
     "Gasto #{gasto_id}, #{nombre_gasto},\nCobrado: #{cobrado},\nGrupo: #{nombre_grupo},\nPendiente: #{pendiente}\n"
   end
 end

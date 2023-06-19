@@ -199,7 +199,7 @@ describe 'BotClient' do
     app.run_once
   end
 
-  it 'shoud get a  "/consultar-movimientos" message from user and repond with user movements' do
+  it 'shoud get a "/consultar-movimientos" message from user and repond with user movements' do
     ApiMock.consultar_movimientos_get_mock(141_733_544)
     when_i_send_text('fake_token', '/consultar-movimientos')
     movements_string = "2021-06-01 12:35 , carga saldo, 100\n2021-06-02 16:05 , transferencia de 50 a carlos\n2021-06-05 19:55 , pago recibido de pepe: 30, gasto 1\n"
@@ -207,7 +207,7 @@ describe 'BotClient' do
     BotClient.new('fake_token').run_once
   end
 
-  it 'shoud get a  "/consultar-gasto" message from user and repond with user movements' do
+  it 'shoud get a "/consultar-gasto" message from user and repond with its information' do
     ApiMock.consultar_gasto_get_mock(141_733_544)
     when_i_send_text('fake_token', '/consultar-gasto 1')
 
@@ -217,11 +217,11 @@ describe 'BotClient' do
     BotClient.new('fake_token').run_once
   end
 
-  it 'shoud get a  "/cobrar-gasto" message from user and repond with user movements' do
-    ApiMock.cobrar_gasto_get_mock(141_733_544)
-    when_i_send_text('fake_token', '/cobrar-gasto 1 100')
+  it 'shoud get a "/pagar-gasto" message from user and repond with the payment information' do
+    ApiMock.pagar_gasto_post_mock(141_733_544)
+    when_i_send_text('fake_token', '/pagar-gasto 1 100')
 
-    gasto_string = "Gasto 1, GastoPrueba,\nCobrado: 50,\nGrupo: grupoTest,\nPendiente: 0.0\n"
+    gasto_string = "Gasto 1, GastoPrueba,\nCobrado: 100,\nGrupo: grupoTest,\nPendiente: 0.0\n"
 
     then_i_get_text('fake_token', gasto_string)
     BotClient.new('fake_token').run_once
