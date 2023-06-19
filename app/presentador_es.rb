@@ -59,4 +59,13 @@ class PresentadorES
   def bienbenido(nombre)
     "#{BIENBENIDO}, #{nombre}"
   end
+
+  def presentar_gasto_cobrado(info_cobranza)
+    gasto_id = info_cobranza['id_gasto']
+    nombre_gasto = info_cobranza['nombre_gasto']
+    cobrado = info_cobranza['cobro']
+    nombre_grupo = info_cobranza['nombre_grupo']
+    pendiente = info_cobranza['pendiente']
+    "Gasto #{gasto_id}, #{nombre_gasto},\nCobrado: #{cobrado},\nGrupo: #{nombre_grupo},\nPendiente: #{pendiente}\n"
+  end
 end

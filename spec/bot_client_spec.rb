@@ -216,4 +216,14 @@ describe 'BotClient' do
     then_i_get_text('fake_token', gasto_string)
     BotClient.new('fake_token').run_once
   end
+
+  it 'shoud get a  "/cobrar-gasto" message from user and repond with user movements' do
+    ApiMock.cobrar_gasto_get_mock(141_733_544)
+    when_i_send_text('fake_token', '/cobrar-gasto 1 100')
+
+    gasto_string = "Gasto 1, GastoPrueba,\nCobrado: 50,\nGrupo: grupoTest,\nPendiente: 0.0\n"
+
+    then_i_get_text('fake_token', gasto_string)
+    BotClient.new('fake_token').run_once
+  end
 end
