@@ -5,7 +5,7 @@ class PresentadorES
   SALDO = 'Saldo'.freeze
   BIENVENIDO = 'Bienvenido'.freeze
   def presentar_movimientos(movimientos)
-    texto = ''
+    texto = movimientos.empty? ? 'No se registran movimientos' : ''
 
     movimientos.each do |movimiento|
       fecha = movimiento['fecha']
