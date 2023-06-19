@@ -9,15 +9,15 @@ class PresentadorES
 
     movimientos.each do |movimiento|
       fecha = movimiento['fecha']
-      valor = movimiento['valor']
+      monto = movimiento['monto']
       tipo = movimiento['tipo']
       case tipo
       when 'pago'
-        texto << "#{fecha} , pago recibido de #{movimiento['usuario_pago']}: #{valor}, gasto #{movimiento['id_gasto']}\n"
+        texto << "#{fecha} , pago recibido de #{movimiento['usuario_secundario']}: #{monto}, gasto #{movimiento['id_gasto']}\n"
       when 'transferencia'
-        texto << "#{fecha} , #{tipo}, #{valor}\n"
+        texto << "#{fecha} , #{tipo} de #{monto} a #{movimiento['usuario_secundario']}\n"
       when 'carga'
-        texto << "#{fecha} , #{tipo} saldo, #{valor}\n"
+        texto << "#{fecha} , #{tipo} saldo, #{monto}\n"
       end
     end
     texto

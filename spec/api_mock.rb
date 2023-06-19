@@ -44,9 +44,9 @@ class ApiMock
   end
 
   def self.consultar_movimientos_get_mock(usuario)
-    movimiento_carga = { fecha: '2021-06-01 12:35', tipo: 'carga', valor: 100, usuario_pago: nil, id_gasto: nil }
-    movimiento_transferencia = { fecha: '2021-06-02 16:05', tipo: 'transferencia', valor: 50, usuario_pago: nil, id_gasto: nil }
-    movimiento_pago = { fecha: '2021-06-05 19:55', tipo: 'pago', valor: 30, usuario_pago: 'pepe', id_gasto: 1 }
+    movimiento_carga = { fecha: '2021-06-01 12:35', tipo: 'carga', monto: 100, usuario_secundario: nil, id_gasto: nil }
+    movimiento_transferencia = { fecha: '2021-06-02 16:05', tipo: 'transferencia', monto: 50, usuario_secundario: 'carlos', id_gasto: nil }
+    movimiento_pago = { fecha: '2021-06-05 19:55', tipo: 'pago', monto: 30, usuario_secundario: 'pepe', id_gasto: 1 }
     respuesta = [movimiento_carga, movimiento_transferencia, movimiento_pago]
 
     WebMock.stub_request(:get, "#{ENV['API_URL']}/movimientos?usuario=#{usuario}")
