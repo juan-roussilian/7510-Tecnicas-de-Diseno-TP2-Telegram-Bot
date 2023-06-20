@@ -61,7 +61,6 @@ class ApiMock
       tipo: 'equitativo',
       saldo: '100',
       grupo: 'grupoTest',
-      estado: 'Pendiente',
       creador: 'Haski',
       usuarios: [{ nombre: 'Juan', estado: 'Pendiente', cobro: 10 }]
     }

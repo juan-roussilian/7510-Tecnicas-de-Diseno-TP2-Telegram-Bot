@@ -26,7 +26,7 @@ class PresentadorES
   def presentar_gasto(gasto)
     texto = ''
     texto << "Gasto #{gasto['id']}, #{gasto['nombre']},\nTipo: #{gasto['tipo']},\nMonto: #{gasto['saldo']},\n"
-    texto << "Grupo: #{gasto['grupo']}\nEstado: #{gasto['estado']}\n"
+    texto << "Grupo: #{gasto['grupo']}\n"
     gasto['usuarios'].each do |usuario|
       texto << "#{usuario['nombre']} > #{gasto['creador']} #{usuario['cobro']}: #{usuario['estado']}\n"
     end
