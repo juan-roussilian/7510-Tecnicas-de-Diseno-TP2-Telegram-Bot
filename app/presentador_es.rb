@@ -24,18 +24,11 @@ class PresentadorES
   end
 
   def presentar_gasto(gasto)
-    gasto_id = gasto['id']
-    gasto_nombre = gasto['nombre']
-    gasto_tipo = gasto['tipo']
-    gasto_saldo = gasto['saldo']
-    gasto_grupo = gasto['grupo']
-    gasto_estado = gasto['estado']
-    gasto_usuarios = gasto['usuarios']
     texto = ''
-    texto << "Gasto #{gasto_id}, #{gasto_nombre},\nTipo: #{gasto_tipo},\nMonto: #{gasto_saldo},\nGrupo: #{gasto_grupo}\n"
-    texto << "Estado: #{gasto_estado}\n"
-    gasto_usuarios.each do |usuario|
-      texto << "#{usuario['nombre']}: #{usuario['estado']}\n"
+    texto << "Gasto #{gasto['id']}, #{gasto['nombre']},\nTipo: #{gasto['tipo']},\nMonto: #{gasto['saldo']},\n"
+    texto << "Grupo: #{gasto['grupo']}\nEstado: #{gasto['estado']}\n"
+    gasto['usuarios'].each do |usuario|
+      texto << "#{usuario['nombre']} > #{gasto['creador']} #{usuario['cobro']}: #{usuario['estado']}\n"
     end
     texto
   end

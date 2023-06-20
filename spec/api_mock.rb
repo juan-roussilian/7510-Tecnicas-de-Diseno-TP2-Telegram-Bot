@@ -62,7 +62,8 @@ class ApiMock
       saldo: '100',
       grupo: 'grupoTest',
       estado: 'Pendiente',
-      usuarios: [{ nombre: 'Juan', estado: 'Pendiente' }]
+      creador: 'Haski',
+      usuarios: [{ nombre: 'Juan', estado: 'Pendiente', cobro: 10 }]
     }
     WebMock.stub_request(:get, "#{ENV['API_URL']}/gasto?id_gasto=1&usuario=#{usuario}")
            .with(headers: { 'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent' => 'Faraday v2.7.4' })
