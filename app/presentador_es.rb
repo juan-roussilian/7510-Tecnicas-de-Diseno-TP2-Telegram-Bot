@@ -28,7 +28,7 @@ class PresentadorES
     texto << "Gasto #{gasto['id']}, #{gasto['nombre']},\nTipo: #{gasto['tipo']},\nMonto: #{gasto['saldo']},\n"
     texto << "Grupo: #{gasto['grupo']}\n"
     gasto['usuarios'].each do |usuario|
-      texto << "#{usuario['nombre']} > #{gasto['creador']} #{usuario['cobro']}: #{usuario['estado']}\n"
+      texto << "#{usuario['nombre']} > #{gasto['creador']} #{usuario['cobro'].round(2)}: #{usuario['estado']}\n"
     end
     texto
   end
