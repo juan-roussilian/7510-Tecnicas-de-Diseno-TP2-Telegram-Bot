@@ -95,6 +95,11 @@ class Routes
     bot.api.send_message(chat_id: message.chat.id, text: salida)
   end
 
+  on_message_pattern %r{/crear-gasto (?<nombre_gasto>.*) (?<monto>.*) (?<nombre_grupo>.*) gorra} do |bot, message, args|
+    salida = ComandoCrearGastoGorra.new(message.from.id, args['nombre_gasto'], args['monto'].to_f, args['nombre_grupo'], PresentadorES.new).ejecutar
+    bot.api.send_message(chat_id: message.chat.id, text: salida)
+  end
+
   on_message_pattern %r{/consultar-gasto (?<id_gasto>.*)} do |bot, message, args|
     salida = ComandoConsultarGasto.new(message.from.id, args['id_gasto'], PresentadorES.new).ejecutar
     bot.api.send_message(chat_id: message.chat.id, text: salida)

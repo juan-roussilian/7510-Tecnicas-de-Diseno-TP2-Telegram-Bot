@@ -1,8 +1,8 @@
 require_relative 'comando'
 
-class ComandoCrearGasto < Comando
+class ComandoCrearGastoGorra < Comando
   ENDPOINT = "#{ENV['API_URL']}/gasto".freeze
-  TIPO = 'equitativo'.freeze
+  TIPO = 'gorra'.freeze
 
   def initialize(usuario, nombre_gasto, monto, nombre_grupo, presentador)
     @usuario = usuario
