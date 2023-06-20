@@ -43,6 +43,15 @@ class ApiMock
            .to_return(status: 201, body: respuesta.to_json, headers: {})
   end
 
+  def self.crear_gasto_gorra_post_mock(usuario, nombre_gasto, monto, nombre_grupo)
+    body = { usuario:, nombre_gasto:, monto: monto.to_f, nombre_grupo:, tipo: 'gorra' }
+    respuesta = { id: 1 }
+    WebMock.stub_request(:post, "#{ENV['API_URL']}/gasto")
+           .with(body: body.to_json, headers: { 'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type' => 'application/x-www-form-urlencoded',
+                                                'User-Agent' => 'Faraday v2.7.4' })
+           .to_return(status: 201, body: respuesta.to_json, headers: {})
+  end
+
   def self.consultar_movimientos_get_mock(usuario)
     movimiento_carga = { fecha: '2021-06-01 12:35', tipo: 'carga', monto: 100, usuario_secundario: nil, id_gasto: nil }
     movimiento_transferencia = { fecha: '2021-06-02 16:05', tipo: 'transferencia', monto: 50, usuario_secundario: 'carlos', id_gasto: nil }

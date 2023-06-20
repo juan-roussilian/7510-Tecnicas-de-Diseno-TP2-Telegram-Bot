@@ -2,6 +2,7 @@ require "#{File.dirname(__FILE__)}/../lib/routing"
 require "#{File.dirname(__FILE__)}/../lib/version"
 require "#{File.dirname(__FILE__)}/tv/series"
 require "#{File.dirname(__FILE__)}/comandos/crear_gasto"
+require "#{File.dirname(__FILE__)}/comandos/crear_gasto_gorra"
 require "#{File.dirname(__FILE__)}/comandos/crear_grupo"
 require "#{File.dirname(__FILE__)}/comandos/transferir"
 require "#{File.dirname(__FILE__)}/comandos/saldo"
@@ -90,13 +91,13 @@ class Routes
     bot.api.send_message(chat_id: message.chat.id, text: salida)
   end
 
-  on_message_pattern %r{/crear-gasto (?<nombre_gasto>.*) (?<monto>.*) (?<nombre_grupo>.*)} do |bot, message, args|
-    salida = ComandoCrearGasto.new(message.from.id, args['nombre_gasto'], args['monto'].to_f, args['nombre_grupo'], PresentadorES.new).ejecutar
+  on_message_pattern %r{/crear-gasto (?<nombre_gasto>.*) (?<monto>.*) (?<nombre_grupo>.*) gorra} do |bot, message, args|
+    salida = ComandoCrearGastoGorra.new(message.from.id, args['nombre_gasto'], args['monto'].to_f, args['nombre_grupo'], PresentadorES.new).ejecutar
     bot.api.send_message(chat_id: message.chat.id, text: salida)
   end
 
-  on_message_pattern %r{/crear-gasto (?<nombre_gasto>.*) (?<monto>.*) (?<nombre_grupo>.*) gorra} do |bot, message, args|
-    salida = ComandoCrearGastoGorra.new(message.from.id, args['nombre_gasto'], args['monto'].to_f, args['nombre_grupo'], PresentadorES.new).ejecutar
+  on_message_pattern %r{/crear-gasto (?<nombre_gasto>.*) (?<monto>.*) (?<nombre_grupo>.*)} do |bot, message, args|
+    salida = ComandoCrearGasto.new(message.from.id, args['nombre_gasto'], args['monto'].to_f, args['nombre_grupo'], PresentadorES.new).ejecutar
     bot.api.send_message(chat_id: message.chat.id, text: salida)
   end
 

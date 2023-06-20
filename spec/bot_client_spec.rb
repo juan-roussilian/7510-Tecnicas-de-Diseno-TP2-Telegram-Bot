@@ -199,6 +199,15 @@ describe 'BotClient' do
     app.run_once
   end
 
+  it 'should get a "/crear-gasto pizza 2000 GrupoPizzas gorra" message from user and respond with "Gasto creado"' do
+    ApiMock.crear_gasto_gorra_post_mock(141_733_544, 'pizza', 2000, 'GrupoPizzas')
+    when_i_send_text('fake_token', '/crear-gasto pizza 2000 GrupoPizzas gorra')
+    then_i_get_text('fake_token', 'Gasto creado id: 1')
+
+    app = BotClient.new('fake_token')
+    app.run_once
+  end
+
   it 'shoud get a "/consultar-movimientos" message from user and repond with user movements' do
     ApiMock.consultar_movimientos_get_mock(141_733_544)
     when_i_send_text('fake_token', '/consultar-movimientos')
