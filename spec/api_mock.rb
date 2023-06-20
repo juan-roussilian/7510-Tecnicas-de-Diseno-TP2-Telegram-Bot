@@ -19,7 +19,7 @@ class ApiMock
   end
 
   def self.transferir_post_mock(usuario, monto, destinatario)
-    body = { usuario:, monto:, destinatario: }
+    body = { usuario:, monto: monto.to_f, destinatario: }
     WebMock.stub_request(:post, "#{ENV['API_URL']}/transferir")
            .with(body: body.to_json, headers: { 'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type' => 'application/x-www-form-urlencoded',
                                                 'User-Agent' => 'Faraday v2.7.4' })
@@ -35,7 +35,7 @@ class ApiMock
   end
 
   def self.crear_gasto_post_mock(usuario, nombre_gasto, monto, nombre_grupo)
-    body = { usuario:, nombre_gasto:, monto:, nombre_grupo: }
+    body = { usuario:, nombre_gasto:, monto: monto.to_f, nombre_grupo: }
     respuesta = { id: 1 }
     WebMock.stub_request(:post, "#{ENV['API_URL']}/gasto")
            .with(body: body.to_json, headers: { 'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type' => 'application/x-www-form-urlencoded',
@@ -73,7 +73,7 @@ class ApiMock
     body = {
       usuario:,
       id_gasto: 1,
-      monto: 100
+      monto: 100.0
     }
     respuesta = {
       id_gasto: 1,

@@ -80,7 +80,7 @@ class Routes
   end
 
   on_message_pattern %r{/transferir (?<monto>.*), (?<destinatario>.*)} do |bot, message, args|
-    salida = ComandoTransferir.new(message.from.id, args['monto'].to_i, args['destinatario'], PresentadorES.new).ejecutar
+    salida = ComandoTransferir.new(message.from.id, args['monto'].to_f, args['destinatario'], PresentadorES.new).ejecutar
     bot.api.send_message(chat_id: message.chat.id, text: salida)
   end
 
@@ -91,7 +91,7 @@ class Routes
   end
 
   on_message_pattern %r{/crear-gasto (?<nombre_gasto>.*) (?<monto>.*) (?<nombre_grupo>.*)} do |bot, message, args|
-    salida = ComandoCrearGasto.new(message.from.id, args['nombre_gasto'], args['monto'].to_i, args['nombre_grupo'], PresentadorES.new).ejecutar
+    salida = ComandoCrearGasto.new(message.from.id, args['nombre_gasto'], args['monto'].to_f, args['nombre_grupo'], PresentadorES.new).ejecutar
     bot.api.send_message(chat_id: message.chat.id, text: salida)
   end
 
@@ -101,7 +101,7 @@ class Routes
   end
 
   on_message_pattern %r{/pagar-gasto (?<id_gasto>.*) (?<monto>.*)} do |bot, message, args|
-    salida = ComandoPagarGasto.new(message.from.id, args['id_gasto'].to_i, args['monto'].to_i, PresentadorES.new).ejecutar
+    salida = ComandoPagarGasto.new(message.from.id, args['id_gasto'].to_i, args['monto'].to_f, PresentadorES.new).ejecutar
     bot.api.send_message(chat_id: message.chat.id, text: salida)
   end
 

@@ -172,10 +172,10 @@ describe 'BotClient' do
     app.run_once
   end
 
-  it 'should get a "/transferir 500 @Juan" message from user with balance 500 and respond with "Transferencia exitosa de 500 a @Juan"' do
+  it 'should get a "/transferir 500 @Juan" message from user with balance 500 and respond with "Transferencia exitosa de 500.0 a @Juan"' do
     ApiMock.transferir_post_mock(141_733_544, 500, '@Juan')
     when_i_send_text('fake_token', '/transferir 500, @Juan')
-    then_i_get_text('fake_token', 'Transferencia exitosa de 500 a @Juan')
+    then_i_get_text('fake_token', 'Transferencia exitosa de 500.0 a @Juan')
 
     app = BotClient.new('fake_token')
     app.run_once
