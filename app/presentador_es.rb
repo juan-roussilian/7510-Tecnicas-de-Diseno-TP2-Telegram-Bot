@@ -61,4 +61,16 @@ class PresentadorES
     pendiente = informacion_de_pago['pendiente']
     "Gasto #{gasto_id}, #{nombre_gasto},\nCobrado: #{cobrado},\nGrupo: #{nombre_grupo},\nPendiente: #{pendiente}\n"
   end
+
+  def error(error)
+    "Error: #{error}."
+  end
+
+  def error_desconocido(estado)
+    "Error desconocido. Estado: #{estado}."
+  end
+
+  def error_servidor
+    'Error del servidor'
+  end
 end
