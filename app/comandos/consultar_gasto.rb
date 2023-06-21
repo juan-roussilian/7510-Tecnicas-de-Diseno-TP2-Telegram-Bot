@@ -1,7 +1,6 @@
 require_relative 'comando'
 
 class ComandoConsultarGasto < Comando
-  ENDPOINT = "#{ENV['API_URL']}/gasto".freeze
   def initialize(usuario, id_gasto, presentador)
     @usuario = usuario
     @id_gasto = id_gasto
@@ -11,7 +10,7 @@ class ComandoConsultarGasto < Comando
 
   def ejecutar
     argumentos = { usuario: @usuario, id_gasto: @id_gasto }
-    respuesta = Faraday.get(ENDPOINT, argumentos)
+    respuesta = ApiGastos.new.consultar_gasto(argumentos)
     if respuesta.status == STATUS_CODE_OK
       info_gasto = JSON.parse(respuesta.body)
       @presentador.presentar_gasto(info_gasto)

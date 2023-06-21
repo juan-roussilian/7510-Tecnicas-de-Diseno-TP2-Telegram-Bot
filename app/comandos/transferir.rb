@@ -1,8 +1,6 @@
 require_relative 'comando'
 
 class ComandoTransferir < Comando
-  ENDPOINT = "#{ENV['API_URL']}/transferir".freeze
-
   def initialize(usuario, monto, destinatario, presentador)
     @usuario = usuario
     @monto = monto
@@ -12,7 +10,8 @@ class ComandoTransferir < Comando
   end
 
   def ejecutar
-    respuesta = Faraday.post(ENDPOINT, { usuario: @usuario, monto: @monto, destinatario: @destinatario }.to_json)
+    body = { usuario: @usuario, monto: @monto, destinatario: @destinatario }.to_json
+    respuesta = ApiGastos.new.transferir(body)
     if respuesta.status == STATUS_CODE_OK
       @presentador.transferencia_exitosa(@monto, @destinatario)
     else

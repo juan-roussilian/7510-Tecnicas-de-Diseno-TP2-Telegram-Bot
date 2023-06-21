@@ -8,8 +8,8 @@ class ComandoConsultarMovimientos < Comando
   end
 
   def ejecutar
-    endpoint = "#{ENV['API_URL']}/movimientos?usuario=#{@usuario}"
-    respuesta = Faraday.get(endpoint)
+    argumentos = { usuario: @usuario }
+    respuesta = ApiGastos.new.consultar_movimientos(argumentos)
     if respuesta.status == STATUS_CODE_OK
       movimientos = JSON.parse(respuesta.body)
       @presentador.presentar_movimientos(movimientos)

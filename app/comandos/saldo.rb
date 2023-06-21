@@ -8,8 +8,8 @@ class ComandoSaldo < Comando
   end
 
   def ejecutar
-    endpoint = "#{ENV['API_URL']}/saldo?usuario=#{@usuario}"
-    respuesta = Faraday.get(endpoint)
+    argumentos = { usuario: @usuario }
+    respuesta = ApiGastos.new.consultar_saldo(argumentos)
     if respuesta.status == STATUS_CODE_OK
       saldo = JSON.parse(respuesta.body)['saldo']
       @presentador.saldo(saldo)

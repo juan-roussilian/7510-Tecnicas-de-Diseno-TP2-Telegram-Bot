@@ -1,3 +1,5 @@
+require "#{File.dirname(__FILE__)}/../api_gastos"
+
 class Comando
   STATUS_ERROR_SERVIDOR = 500
   STATUS_CODE_SUCCESS_CREATING = 201

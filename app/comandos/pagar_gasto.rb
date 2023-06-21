@@ -1,5 +1,4 @@
 class ComandoPagarGasto < Comando
-  ENDPOINT = "#{ENV['API_URL']}/pagos".freeze
   def initialize(usuario, id_gasto, monto, presentador)
     @presentador = presentador
     @usuario = usuario
@@ -11,7 +10,7 @@ class ComandoPagarGasto < Comando
   def ejecutar
     body = { usuario: @usuario, id_gasto: @id_gasto }
     body[:monto] = @monto unless @monto.nil?
-    respuesta = Faraday.post(ENDPOINT, body.to_json)
+    respuesta = ApiGastos.new.pagar_gasto(body.to_json)
     if respuesta.status == STATUS_CODE_SUCCESS_CREATING
       informacion_de_pago = JSON.parse(respuesta.body)
       @presentador.presentar_gasto_pagado(informacion_de_pago)

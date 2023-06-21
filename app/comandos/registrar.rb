@@ -12,7 +12,8 @@ class ComandoRegistrar < Comando
   end
 
   def ejecutar
-    respuesta = Faraday.post(ENDPOINT, { nombre: @nombre, email: @email, telegram_id: @telegram_id, telegram_username: @telegram_username }.to_json)
+    body = { nombre: @nombre, email: @email, telegram_id: @telegram_id, telegram_username: @telegram_username }.to_json
+    respuesta = ApiGastos.new.registrar(body)
     if respuesta.status == STATUS_CODE_SUCCESS_CREATING
       @presentador.bienvenido(@nombre)
     else
