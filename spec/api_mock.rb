@@ -78,12 +78,12 @@ class ApiMock
            .to_return(status: 200, body: gasto.to_json, headers: {})
   end
 
-  def self.pagar_gasto_post_mock(usuario)
+  def self.pagar_gasto_post_mock(usuario, monto)
     body = {
       usuario:,
-      id_gasto: 1,
-      monto: 100.0
+      id_gasto: 1
     }
+    body[:monto] = monto.to_f unless monto.nil?
     respuesta = {
       id_gasto: 1,
       nombre_gasto: 'GastoPrueba',

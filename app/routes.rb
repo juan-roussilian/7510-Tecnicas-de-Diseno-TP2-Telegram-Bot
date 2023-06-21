@@ -111,6 +111,11 @@ class Routes
     bot.api.send_message(chat_id: message.chat.id, text: salida)
   end
 
+  on_message_pattern %r{/pagar-gasto (?<id_gasto>.*)} do |bot, message, args|
+    salida = ComandoPagarGasto.new(message.from.id, args['id_gasto'].to_i, nil, PresentadorES.new).ejecutar
+    bot.api.send_message(chat_id: message.chat.id, text: salida)
+  end
+
   default do |bot, message|
     bot.api.send_message(chat_id: message.chat.id, text: 'Uh? No te entiendo! Me repetis la pregunta?')
   end

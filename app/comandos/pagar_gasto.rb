@@ -9,7 +9,9 @@ class ComandoPagarGasto < Comando
   end
 
   def ejecutar
-    respuesta = Faraday.post(ENDPOINT, { usuario: @usuario, id_gasto: @id_gasto, monto: @monto }.to_json)
+    body = { usuario: @usuario, id_gasto: @id_gasto }
+    body[:monto] = @monto unless @monto.nil?
+    respuesta = Faraday.post(ENDPOINT, body.to_json)
     if respuesta.status == STATUS_CODE_SUCCESS_CREATING
       informacion_de_pago = JSON.parse(respuesta.body)
       @presentador.presentar_gasto_pagado(informacion_de_pago)
