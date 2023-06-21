@@ -216,11 +216,21 @@ describe 'BotClient' do
     BotClient.new('fake_token').run_once
   end
 
-  it 'shoud get a "/consultar-gasto" message from user and repond with its information' do
-    ApiMock.consultar_gasto_get_mock(141_733_544)
+  it 'shoud get a "/consultar-gasto" message for type equitativo from user and repond with its information' do
+    ApiMock.consultar_gasto_equitativo_get_mock(141_733_544)
     when_i_send_text('fake_token', '/consultar-gasto 1')
 
     gasto_string = "Gasto 1: GastoPrueba\nTipo: equitativo\nMonto: 100\nGrupo: grupoTest\nJuan -> Haski: Pendiente\n"
+
+    then_i_get_text('fake_token', gasto_string)
+    BotClient.new('fake_token').run_once
+  end
+
+  it 'shoud get a "/consultar-gasto" message for type gorra from user and repond with its information' do
+    ApiMock.consultar_gasto_gorra_get_mock(141_733_544)
+    when_i_send_text('fake_token', '/consultar-gasto 1')
+
+    gasto_string = "Gasto 1: GastoPrueba\nTipo: gorra\nMonto: 100\nGrupo: grupoTest\nJuan -> Haski 10.011: Pendiente\n"
 
     then_i_get_text('fake_token', gasto_string)
     BotClient.new('fake_token').run_once

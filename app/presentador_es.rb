@@ -4,6 +4,7 @@ class PresentadorES
   TRANSFERENCIA = 'Transferencia exitosa'.freeze
   SALDO = 'Saldo'.freeze
   BIENVENIDO = 'Bienvenido'.freeze
+  GASTO_EQUITATIVO = 'equitativo'.freeze
   def presentar_movimientos(movimientos)
     texto = movimientos.empty? ? 'No se registran movimientos' : ''
 
@@ -27,10 +28,11 @@ class PresentadorES
     texto = ''
     texto << "Gasto #{gasto['id']}: #{gasto['nombre']}\nTipo: #{gasto['tipo']}\nMonto: #{gasto['saldo']}\n"
     texto << "Grupo: #{gasto['grupo']}\n"
-    gasto['usuarios'].each do |usuario|
-      texto << "#{usuario['nombre']} -> #{gasto['creador']}: #{usuario['estado']}\n"
+    if gasto['tipo'] == GASTO_EQUITATIVO
+      presentar_usuarios_para_gasto_equitativo(texto, gasto)
+    else
+      presentar_usuarios_para_gasto_a_la_gorra(texto, gasto)
     end
-    texto
   end
 
   def presentar_gasto_creado(id)
@@ -72,5 +74,21 @@ class PresentadorES
 
   def error_servidor
     'Error del servidor'
+  end
+
+  private
+
+  def presentar_usuarios_para_gasto_equitativo(texto, gasto)
+    gasto['usuarios'].each do |usuario|
+      texto << "#{usuario['nombre']} -> #{gasto['creador']}: #{usuario['estado']}\n"
+    end
+    texto
+  end
+
+  def presentar_usuarios_para_gasto_a_la_gorra(texto, gasto)
+    gasto['usuarios'].each do |usuario|
+      texto << "#{usuario['nombre']} -> #{gasto['creador']} #{usuario['cobro']}: #{usuario['estado']}\n"
+    end
+    texto
   end
 end
