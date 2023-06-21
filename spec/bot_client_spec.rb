@@ -220,7 +220,7 @@ describe 'BotClient' do
     ApiMock.consultar_gasto_get_mock(141_733_544)
     when_i_send_text('fake_token', '/consultar-gasto 1')
 
-    gasto_string = "Gasto 1, GastoPrueba,\nTipo: equitativo,\nMonto: 100,\nGrupo: grupoTest\nJuan > Haski 10.01: Pendiente\n"
+    gasto_string = "Gasto 1: GastoPrueba\nTipo: equitativo\nMonto: 100\nGrupo: grupoTest\nJuan -> Haski: Pendiente\n"
 
     then_i_get_text('fake_token', gasto_string)
     BotClient.new('fake_token').run_once
